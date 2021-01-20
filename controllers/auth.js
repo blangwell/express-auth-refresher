@@ -3,23 +3,23 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/signup', (req, res) => {
-  res.send('This the sign up page');
+  res.render('auth/signup');
 });
 
 router.post('/signup', (req, res) => {
-  console.log('Post to Signup Page');
+  res.send(req.body)
 });
 
 router.get('/login', (req, res) => {
-  res.send('This the login page');
+  res.render('auth/login');
 });
 
 router.post('/login', (req, res) => {
-  console.log('Post to Login page');
+  res.send(req.body)
 });
 
 router.get('/logout', (req, res) => {
-  res.send('Logout goes here');
+  res.render('auth/logout');
 });
 
 module.exports = router;

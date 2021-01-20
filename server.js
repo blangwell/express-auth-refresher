@@ -6,15 +6,18 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(ejsLayouts);
+app.use(express.urlencoded({extended: false}));
+
 
 app.use('/auth', require('./controllers/auth'));
 
 app.get('/', (req, res) => {
-  res.send('home hit');
+  res.render('home');
 });
 
 app.get('/profile', (req, res) => {
-  res.send('profile page');
+  res.render('profile');
 });
 
 app.listen(PORT, () => console.log(`running on port ${PORT}`))
