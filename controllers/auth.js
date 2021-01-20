@@ -1,25 +1,48 @@
-const express = require('express');
+const db = require('../models')
 
-const router = express.Router();
-
-router.get('/signup', (req, res) => {
+exports.getSignup = (req, res) => {
   res.render('auth/signup');
-});
+};
 
-router.post('/signup', (req, res) => {
-  res.send(req.body)
-});
+exports.postSignup = (req, res) => {
+  db.user.findOrCreate({
+    where: {
+      email: req.body.email
+    },
+    defaults: {
+      name: req.body.name,
+      password: req.body.password
+    }
+  })
+  .then(([user, created]) => {
+    res.send(`User: ${user.email}, Created: ${created}`);
+  })
+  .catch(err => {
+    res.send(`There was an error finding or creating. Check the console!`);
+    console.log(`Error finding/creating user ${err}`);
+  })
+};
 
-router.get('/login', (req, res) => {
+exports.getLogin = (req, res) => {
   res.render('auth/login');
-});
+};
 
-router.post('/login', (req, res) => {
-  res.send(req.body)
-});
+exports.postLogin = (req, res) => {
+  db.user.findOne({
+    where: {
+      email: req.body.email,
+      password: req.body.password
+    }
+  })
+  .then(foundUser => {
+    res.send(`We found the following user: ${foundUser.email}`);
+  })
+  .catch(err => {
+    res.send(`There was an error logging in. Check the console!`);
+    console.log(`Error logging user in: ${err}`);
+  })
+};
 
-router.get('/logout', (req, res) => {
+exports.getLogout = (req, res) => {
   res.render('auth/logout');
-});
-
-module.exports = router;
+};

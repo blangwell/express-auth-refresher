@@ -10,7 +10,7 @@ app.use(ejsLayouts);
 app.use(express.urlencoded({extended: false}));
 
 
-app.use('/auth', require('./controllers/auth'));
+app.use('/auth', require('./routes/auth'));
 
 app.get('/', (req, res) => {
   res.render('home');
