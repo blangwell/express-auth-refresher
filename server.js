@@ -3,6 +3,7 @@ const express = require('express');
 const ejsLayouts = require('express-ejs-layouts');
 const PORT = process.env.PORT;
 const session = require('express-session');
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const app = express();
 
@@ -13,18 +14,18 @@ app.use(express.urlencoded({extended: false}));
 app.use('/auth', require('./routes/auth'));
 
 app.use(session({
-  'secret': 'myNameisBigTallmn420'
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
 }))
 
-function reqLog(req, res, next) {
+app.use(function(req, res, next) {
   req.log = function(out) {
     console.log(out);
     console.log(Date.now());
   }
   next();
-}
-
-app.use('*', reqLog)
+})
 
 app.get('/', (req, res) => {
   console.log(req.session)
